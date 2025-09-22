@@ -14,7 +14,7 @@ import {
 } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
-import UserDropdown from "./components/userDropdown";
+import UserDropdown from "../components/userDropdown";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -70,7 +70,7 @@ export default function RootLayout({
                 </div>
               </SignedOut>
               <SignedIn>
-                <UserDropdown />
+                <UserDropdown  />
               </SignedIn>
             </div>
           </nav>
