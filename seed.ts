@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 import { drizzle } from "drizzle-orm/neon-http";
 import { eq } from "drizzle-orm";
-import { categoriesTable, transactionsTable } from "./db/schema";
+import { categoriesTable } from "./db/schema";
 
 dotenv.config({
   path: ".env.local",

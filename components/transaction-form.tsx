@@ -33,7 +33,9 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "./ui/input";
 
-const transactionFormSchema = z.object({
+import { type Category } from "@/types/Category";
+
+export const transactionFormSchema = z.object({
   transactionType: z.enum(["income", "expense"]),
   categoryId: z.coerce.number().positive("Please select a category"),
   transactionDate: z.coerce
@@ -46,7 +48,12 @@ const transactionFormSchema = z.object({
     .max(300, "Description must contain a maximum of 300 characters"),
 });
 
-const TransactionForm = () => {
+type Props = {
+  categories: Category[];
+  onSubmit: (data: z.infer<typeof transactionFormSchema>) => void;
+};
+
+const TransactionForm = ({ categories, onSubmit }: Props) => {
   const form = useForm<z.infer<typeof transactionFormSchema>>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
@@ -58,12 +65,15 @@ const TransactionForm = () => {
     },
   });
 
-  const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
-    console.log("DATA___", data);
-  };
+  const transactionType = form.watch("transactionType");
+
+  const filteredCatrgories = categories.filter(
+    (cat) => cat.type === transactionType
+  );
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <fieldset
           disabled={form.formState.isSubmitting}
           className="grid grid-cols-2 gap-y-5 gap-x-2 items-start"
@@ -76,7 +86,13 @@ const TransactionForm = () => {
                 <FormItem>
                   <FormLabel>Transaction Type</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={(newValue) => {
+                        field.onChange(newValue);
+                        form.setValue("categoryId", 0);
+                      }}
+                      value={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select transaction type" />
                       </SelectTrigger>
@@ -106,7 +122,13 @@ const TransactionForm = () => {
                       <SelectTrigger>
                         <SelectValue placeholder="Select transaction type" />
                       </SelectTrigger>
-                      <SelectContent></SelectContent>
+                      <SelectContent>
+                        {filteredCatrgories?.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id.toString()}>
+                            {cat.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />
