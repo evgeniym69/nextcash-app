@@ -57,7 +57,7 @@ const TransactionsPage = async ({
 
   const yearsRange = await getTransactionYearsRange();
 
-  console.log("111", { transactions });
+  // console.log("111", { transactions });
 
   console.log({ searchParamsValues });
 
