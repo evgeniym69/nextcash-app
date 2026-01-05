@@ -10,7 +10,7 @@ export default async function Cashflow({ year }: { year: number }) {
     getTransactionYearsRange(),
   ]);
 
-  console.log("Cashflow render", { cashflowData, yearsRange });
+  // console.log("Cashflow render", { cashflowData, yearsRange });
 
   return (
     <Card className="mb-5">
