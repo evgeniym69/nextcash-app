@@ -1,6 +1,8 @@
 import Cashflow from "./cashflow";
 import RecentTransactions from "./recent-transactions";
 
+
+
 const DashboardPage = async ({
   searchParams,
 }: {
